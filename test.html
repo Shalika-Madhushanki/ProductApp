@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="scripts.js"></script> 
+    </head>
+<body>
+
+<h2>Product Application</h2>
+<h3>Manufacturers</h3>
+<div id="button_area">
+</div>
+
+<div>
+    <p id="ts"></p>
+    <div id="cont"></div>
+</div>
+
+<script>
+
+var map1 = new Map();
+for (i = 0; i < arrayOfObjects.length; i++) {
+    var manu_name = arrayOfObjects[i].manufacturer;
+    var arry = [];
+    if (map1.has(manu_name)){
+        arry = map1.get(manu_name);
+    }else{
+        var arry = [];
+    }
+    arry.push(arrayOfObjects[i]);
+    map1.set(manu_name,arry);
+    
+}
+
+mapIter = map1.keys();
+while(true){
+    var result= mapIter.next().value;
+    if (!result){
+        break;
+    }
+    var btn = document.createElement("BUTTON");
+    btn.value = result;
+    btn.innerHTML = result;
+    btn.onclick= callJavascriptFunction;  
+    document.getElementById("button_area").appendChild(btn);
+}
+
+function callJavascriptFunction(event){
+    clearBox("cont");
+    var itemsArry = map1.get(this.value);
+    for (i = 0; i < itemsArry.length; i++) {
+        var h = document.createElement("DIV");
+        h.style.border = "solid #000000"; 
+
+        document.getElementById("cont").appendChild(h);
+        var img = document.createElement('img'); 
+        img.src = itemsArry[i].image ; 
+        img.height = 120;
+        img.width = 120;
+        img.style.marginTop = 70;
+        document.getElementById("cont").appendChild(img); 
+
+        var p1 = document.createElement("H4");
+        var t1 = document.createTextNode(itemsArry[i].name);
+        p1.appendChild(t1);
+        document.getElementById("cont").appendChild(p1);
+
+        var p2 = document.  createElement("P");
+        var t2 = document.createTextNode(itemsArry[i].description);
+        p2.appendChild(t2);
+        document.getElementById("cont").appendChild(p2);
+    }
+}
+
+function clearBox(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>
