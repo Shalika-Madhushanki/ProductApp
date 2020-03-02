@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="scripts.js"></script> 
+    </head>
+<body>
+
+<h2>Product Application</h2>
+<h3 id="filter_type"></h3>
+<div id="button_area">
+</div>
+
+<div>
+    <div id="container"></div>
+</div>
+
+<script>
+
+var productsMap = new Map();
+var filter_name = "manufacturer";
+var filterName = filter_name.toUpperCase();
+document.getElementById('filter_type').innerHTML = filterName;
+
+for (i = 0; i < dataArray.length; i++) {
+    var filter = dataArray[i][filter_name];
+    var filteredProductsArray = [];
+    if (productsMap.has(filter)){
+        filteredProductsArray = productsMap.get(filter);
+    }else{
+        var filteredProductsArray = [];
+    }
+    filteredProductsArray.push(dataArray[i]);
+    productsMap.set(filter,filteredProductsArray);
+    
+}
+
+filterIterator = productsMap.keys();
+while(true){
+    var filterItem= filterIterator.next().value;
+    if (!filterItem){
+        break;
+    }
+    var filterItemBtn = document.createElement("BUTTON");
+    filterItemBtn.value = filterItem;
+    filterItemBtn.innerHTML = filterItem;
+    filterItemBtn.onclick= addProductElement;  
+    document.getElementById("button_area").appendChild(filterItemBtn);
+}
+
+function addProductElement(event){
+    clearContainer("container");
+    var productItemsArray = productsMap.get(this.value);
+    for (i = 0; i < productItemsArray.length; i++) {
+        var productDivContainer = document.createElement("DIV");
+        productDivContainer.style.border = "solid #000000"; 
+        document.getElementById("container").appendChild(productDivContainer);
+
+        var productImg = document.createElement('img'); 
+        productImg.src = productItemsArray[i].image ; 
+        productImg.height = 120;
+        productImg.width = 120;
+        productImg.style.marginTop = 70;
+        document.getElementById("container").appendChild(productImg); 
+
+        // var productNameHeading = document.createElement("H4");
+        // var productNameTxt = document.createTextNode(productItemsArray[i].name);
+        // productNameHeading.appendChild(productNameTxt);
+        // document.getElementById("container").appendChild(productNameHeading);
+        createElement("H4",productItemsArray[i].name,"container");
+
+        // var productDescription = document.createElement("P");
+        // var prodcuDescTxt = document.createTextNode(productItemsArray[i].description);
+        // productDescription.appendChild(prodcuDescTxt);
+        // document.getElementById("container").appendChild(productDescription);
+        createElement("P",productItemsArray[i].description,"container");
+
+    }
+}
+
+function createElement(ElementType,text,container){
+    var element = document.createElement(ElementType);
+    var txt = document.createTextNode(text);
+    element.appendChild(txt);
+    document.getElementById(container).appendChild(element);
+}
+
+function clearContainer(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>
